@@ -2,3 +2,4 @@ folium
 pandas
 seaborn
 matplotlib
+streamlit_folium
