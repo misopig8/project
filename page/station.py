@@ -52,14 +52,8 @@ folium_static(m)
 
 #---------------------------------------------------
 
-# 정류소명이 문자열인지 확인 후 변환
+# 정류소명이 문자열인지 확인 후 변환!! GPT는 신이야
 top_bus_stops_data['정류소명'] = top_bus_stops_data['정류소명'].astype(str)
-
-# # 최다 이용 정류장 선택
-# selected_bus_stop = st.selectbox('최다 이용 정류장을 선택하세요.', top_bus_stops_data['정류소명'])
-
-# # NaN 값을 제거
-# top_bus_stops_data.dropna(subset=['정류소명'], inplace=True)
 
 # #//////////////////
 
