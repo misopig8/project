@@ -2,4 +2,5 @@ folium
 pandas
 seaborn
 matplotlib
+streamlit >= 1.9.2
 streamlit_folium
