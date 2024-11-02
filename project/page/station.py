@@ -11,8 +11,8 @@ st.title("대구 내 버스 정거장 정보")
 
 plt.rc("font", family = "Malgun Gothic")
 sns.set(font="Malgun Gothic", rc={"axes.unicode_minus":False}, style='white')
-bus_stops_data = pd.read_csv('page/대구광역시_시내버스 정류소 위치정보_20240924.csv', encoding="utf-8")
-top_bus_stops_data = pd.read_csv("page/한국교통안전공단_대구광역시 최다 이용 정류장_20231231.csv", encoding="utf-8")
+bus_stops_data = pd.read_csv('project/page/대구광역시_시내버스 정류소 위치정보_20240924.csv', encoding="utf-8")
+top_bus_stops_data = pd.read_csv("project/page/한국교통안전공단_대구광역시 최다 이용 정류장_20231231.csv", encoding="utf-8")
 
 most_used_bus_stops = {
     "약령시건너(동성로입구)(7001003800)": {"위도": 35.867842, "경도": 128.593687},	
