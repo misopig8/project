@@ -45,3 +45,47 @@ else:
     # 초기에는 전체 데이터 출력
     st.write("모든 버스 정류장 데이터:")
     st.write(monthly_move)
+
+
+# 검색창 추가
+search_query = st.text_input("검색할 정류소명을 입력하세요:", "")
+
+# 검색 및 필터링
+if search_query:
+    # 검색어를 포함한 정류소 필터링
+    search_results = bus_stops_data[bus_stops_data['정류소명'].str.contains(search_query, case=False, na=False)]
+    
+    if not search_results.empty:
+        st.write(f"'{search_query}'에 대한 검색 결과:")
+        
+        # 검색 결과에서 선택된 정류소 하나를 선택할 수 있게 설정
+        selected_stop = st.selectbox("정류소를 선택하세요:", search_results['정류소명'].unique())
+        
+        # 선택한 정류소의 월별 데이터 필터링
+        selected_data = search_results[search_results['정류소명'] == selected_stop]
+        
+        # 월별 데이터 추출 및 전처리
+        selected_data['년월'] = pd.to_datetime(selected_data['년월'], format='%y-%b')
+        selected_data = selected_data.sort_values('년월')
+        
+        # 그래프 생성
+        plt.figure(figsize=(10, 5))
+        
+        # 승차 데이터 추가
+        plt.plot(selected_data['년월'], selected_data['승차'], marker='o', label='승차')
+        
+        # 하차 데이터 추가
+        plt.plot(selected_data['년월'], selected_data['하차'], marker='x', label='하차')
+        
+        # 그래프 레이아웃 설정
+        plt.title(f"{selected_stop} 정류장의 월별 승차 및 하차 인원")
+        plt.xlabel("월")
+        plt.ylabel("이용자 수")
+        plt.legend()
+
+        # 그래프를 Streamlit에 표시
+        st.pyplot(plt)
+    else:
+        st.write(f"'{search_query}'에 해당하는 정류소가 없습니다.")
+else:
+    st.write("정류소명을 입력하여 검색하세요.")
