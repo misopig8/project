@@ -8,9 +8,9 @@ import seaborn as sns
 import matplotlib.font_manager as fm
 
 
-st.title("일일 버스통행량 정보")
+st.title("버스통행량 정보")
 
-daily_move = pd.read_csv('project/page/대구광역시_시내버스 일별 이용객수_20170131..csv', encoding="utf-8")
+monthly_move = pd.read_csv('project/page/대구광역시_시내버스_월별이용자수.csv', encoding="utf-8")
 bus_stops_data = pd.read_csv('project/page/대구광역시_시내버스 정류소 위치정보_20240924.csv', encoding="utf-8")
 
 plt.rc("font", family = "Malgun Gothic")
@@ -28,12 +28,12 @@ st.subheader('대구시 내 버스 정류장 분포')
 folium_static(m)
 
 # 검색창 추가
-search_query = st.text_input("검색어를 입력하세요", "")
+search_query = st.text_input("찾는 정류장의 이름을입력하세요", "")
 
 # 검색 기능 구현
 if search_query:
     # 입력한 검색어가 포함된 행만 필터링
-    search_results = bus_stops_data[bus_stops_data['정류소명'].str.contains(search_query, case=False, na=False)]
+    search_results = monthly_move[monthly_move['정류소명'].str.contains(search_query, case=False, na=False)]
     
     # 결과가 있다면 출력
     if not search_results.empty:
@@ -44,4 +44,4 @@ if search_query:
 else:
     # 초기에는 전체 데이터 출력
     st.write("모든 버스 정류장 데이터:")
-    st.write(bus_stops_data)
+    st.write(monthly_move)
