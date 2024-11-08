@@ -10,7 +10,7 @@ import matplotlib.font_manager as fm
 
 st.title("일일 버스통행량 정보")
 
-daily_move = pd.read_csv('C:\project\page\대구광역시_시내버스 일별 이용객수_20170131..csv', encoding="utf-8")
+daily_move = pd.read_csv('project/page/대구광역시_시내버스 일별 이용객수_20170131..csv', encoding="utf-8")
 bus_stops_data = pd.read_csv('page/대구광역시_시내버스 정류소 위치정보_20240924.csv', encoding="utf-8")
 
 plt.rc("font", family = "Malgun Gothic")
