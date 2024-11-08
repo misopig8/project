@@ -27,3 +27,21 @@ for idx, row in bus_stops_data.iterrows():
 st.subheader('대구시 내 버스 정류장 분포')
 folium_static(m)
 
+# 검색창 추가
+search_query = st.text_input("검색어를 입력하세요", "")
+
+# 검색 기능 구현
+if search_query:
+    # 입력한 검색어가 포함된 행만 필터링
+    search_results = bus_stops_data[bus_stops_data['정류소명'].str.contains(search_query, case=False, na=False)]
+    
+    # 결과가 있다면 출력
+    if not search_results.empty:
+        st.write(f"'{search_query}'에 대한 검색 결과:")
+        st.write(search_results)
+    else:
+        st.write(f"'{search_query}'에 대한 검색 결과가 없습니다.")
+else:
+    # 초기에는 전체 데이터 출력
+    st.write("모든 버스 정류장 데이터:")
+    st.write(bus_stops_data)
