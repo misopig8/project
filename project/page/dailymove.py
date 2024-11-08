@@ -16,7 +16,7 @@ bus_stops_data = pd.read_csv('project/page/대구광역시_시내버스 정류�
 plt.rc("font", family = "Malgun Gothic")
 sns.set(font="Malgun Gothic", rc={"axes.unicode_minus":False}, style='white')
 
-m = folium.Map(location=[35.8714354, 128.601445], tiles='cartodbpositron', zoom_start=12)
+m = folium.Map(location=[35.8714354, 128.601445], tiles='cartodbpositron', zoom_start=20)
 for idx, row in bus_stops_data.iterrows():
     folium.Marker(
         location=[row['위도'], row['경도']],
