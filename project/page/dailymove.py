@@ -8,11 +8,22 @@ import seaborn as sns
 import matplotlib.font_manager as fm
 
 
+
+@st.cache_data
+def load_monthly_move_data():
+    return pd.read_csv('project/page/대구광역시_시내버스_월별이용자수.csv', encoding="utf-8")
+
+
+@st.cache_data
+def load_bus_stops_data():
+    return pd.read_csv('project/page/대구광역시_시내버스 정류소 위치정보_20240924.csv', encoding="utf-8")
+
+
 st.title("버스통행량 정보")
 
-monthly_move = pd.read_csv('project/page/대구광역시_시내버스_월별이용자수.csv', encoding="utf-8")
-bus_stops_data = pd.read_csv('project/page/대구광역시_시내버스 정류소 위치정보_20240924.csv', encoding="utf-8")
-
+# 데이터 로딩 (캐시 적용됨)
+monthly_move = load_monthly_move_data()
+bus_stops_data = load_bus_stops_data()
 plt.rc("font", family = "Malgun Gothic")
 sns.set(font="Malgun Gothic", rc={"axes.unicode_minus":False}, style='white')
 
