@@ -114,9 +114,9 @@ def load_data():
     # CSV 파일을 로드 (인코딩 설정 변경)
     monthly_move = pd.read_csv('project/page/대구광역시_시내버스_월별이용자수.csv', encoding='utf-8-sig')
     
-    # 쉼표를 제거하고 승차와 하차를 정수로 변환
-    monthly_move['승차'] = monthly_move['승차'].str.replace(',', '').astype(int)
-    monthly_move['하차'] = monthly_move['하차'].str.replace(',', '').astype(int)
+    # 따옴표와 쉼표를 제거하고 승차와 하차를 정수로 변환
+    monthly_move['승차'] = monthly_move['승차'].str.replace('"', '').str.replace(',', '').astype(int)
+    monthly_move['하차'] = monthly_move['하차'].str.replace('"', '').str.replace(',', '').astype(int)
     
     return monthly_move
 
