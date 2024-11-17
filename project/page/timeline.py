@@ -49,6 +49,7 @@ if station_name:
             # 다섯 번째 열에는 구분선을 추가
             with cols[4]:
                 st.write(f"**시간표 유형**: {row['시간표유형']}")
+                st.divider
            
     else:
         st.write(f"'{station_name}'에 해당하는 정류장이 없습니다.")
