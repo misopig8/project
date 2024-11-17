@@ -1,8 +1,8 @@
 import streamlit as st
 import pandas as pd
 
-# CSV 파일을 pandas로 읽기 (앞에 /project/page 추가)
-bus_chart = pd.read_csv('/project/page/대구광역시_시내버스 정류소별_노선별_평균배차간격_20231117.csv', encoding='utf-8')
+# CSV 파일을 pandas로 읽기 (앞에 /project/page/ 추가하지 않음)
+bus_chart = pd.read_csv('project/page/대구광역시_시내버스 정류소별_노선별_평균배차간격_20231117.csv', encoding='utf-8')
 
 # Streamlit 앱 타이틀
 st.title('대구광역시 시내버스 정류장 정보 검색')
