@@ -118,9 +118,17 @@ def load_data():
     monthly_move['승차'] = monthly_move['승차'].str.replace('"', '').str.replace(',', '').astype(int)
     monthly_move['하차'] = monthly_move['하차'].str.replace('"', '').str.replace(',', '').astype(int)
     
-    # '년월'을 2020-01, 2020-02 형식으로 변환
-    monthly_move['년월'] = monthly_move['년월'].apply(lambda x: '20' + x if len(x) == 5 else x)  # "20-Jan" -> "2020-01"
-    monthly_move['년월'] = pd.to_datetime(monthly_move['년월'], format='%Y-%b')  # 년월을 날짜 형식으로 변환
+    # 영어 월 약어를 숫자로 변환
+    month_map = {
+        'Jan': '01', 'Feb': '02', 'Mar': '03', 'Apr': '04', 'May': '05', 'Jun': '06',
+        'Jul': '07', 'Aug': '08', 'Sep': '09', 'Oct': '10', 'Nov': '11', 'Dec': '12'
+    }
+    
+    # '년월' 컬럼에서 월을 숫자로 변환
+    monthly_move['년월'] = monthly_move['년월'].apply(lambda x: '20' + x.split('-')[0] + '-' + month_map[x.split('-')[1]])
+
+    # '년월'을 날짜 형식으로 변환
+    monthly_move['년월'] = pd.to_datetime(monthly_move['년월'], format='%Y-%m')  # '년월'을 datetime 형식으로 변환
 
     return monthly_move
 
