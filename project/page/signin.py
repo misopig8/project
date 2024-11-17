@@ -24,11 +24,8 @@ pw = st.text_input("비밀번호", type='password')
 pw_check = st.text_input("비밀번호 확인", type='password')
     #정류장
 
-
-station_name = st.text_input('근처 정류장 이름을 입력하세요:')
-
 # 사용자 입력을 통해 정류장 이름 검색
-station_name = st.text_input('정류장 이름을 입력하세요:')
+station_name = st.text_input('근처 정류장 이름을 입력하세요:')
 
 if station_name:
     # 입력한 정류장 이름에 해당하는 데이터를 필터링
