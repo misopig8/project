@@ -32,27 +32,23 @@ if station_name:
             # 첫 번째 열에 노선과 첫차 출력
             with cols[0]:
                 st.write(f"**노선**: {row['노선']}")
-                st.write(f"**첫차**: {row['첫차']}")
+               
                 
             # 두 번째 열에 막차 출력
             with cols[1]:
-                st.write(f"**막차**: {row['막차']}")
+                st.write(f"**첫차**: {row['첫차']}")
                 
             # 세 번째 열에 배차시간 출력
             with cols[2]:
-                st.write(f"**배차시간**: {row['평균배차시간(분)']}분")
+                st.write(f"**막차**: {row['막차']}")
                 
             # 네 번째 열에 시간표 유형 출력 (빈 값일 경우 공백을 채움)
             with cols[3]:
-                if pd.notna(row['시간표유형']):
-                    st.write(f"**시간표 유형**: {row['시간표유형']}")
-                else:
-                    st.write("**시간표 유형**: -")  # 값이 없을 경우 '-' 표시
+                st.write(f"**배차시간**: {row['평균배차시간(분)']}분")
                 
             # 다섯 번째 열에는 구분선을 추가
             with cols[4]:
-                st.markdown("<hr>", unsafe_allow_html=True)  # 구분선 추가
-
-            st.write("---")  # 덧붙여서 각 항목을 구분하는 줄 추가
+                st.write(f"**시간표 유형**: {row['시간표유형']}")
+           
     else:
         st.write(f"'{station_name}'에 해당하는 정류장이 없습니다.")
