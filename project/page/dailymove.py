@@ -156,7 +156,11 @@ if choice_list:
 
     # Altair 시각화용 데이터 전처리
     filtered_data = filtered_data.sort_values(by=['년월'])
-    
+
+    # filtered_data 확인 (디버깅용)
+    st.write("전처리된 데이터:")
+    st.write(filtered_data[['년월', '승차', '하차']])
+
     # Altair 차트 생성
     chart = alt.Chart(filtered_data).transform_fold(
         ['승차', '하차'],  # 시각화할 컬럼 선택
