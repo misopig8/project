@@ -95,76 +95,60 @@
 # else:
 #     st.write("정류소명을 입력하여 검색하세요.")
 import streamlit as st
-from streamlit_folium import folium_static
-import folium
 import pandas as pd
-import matplotlib.pyplot as plt
-import seaborn as sns
-
-# 스타일 설정
-plt.rc("font", family="Malgun Gothic")
-sns.set(font="Malgun Gothic", rc={"axes.unicode_minus": False}, style='white')
-
-# 제목 표시
-st.title("대구시 버스 정류장 및 월별 통행량 정보")
+import altair as alt
 
 # 데이터 로드
-monthly_move = pd.read_csv('project/page/대구광역시_시내버스_월별이용자수.csv', encoding="utf-8")
-bus_stops_data = pd.read_csv('project/page/대구광역시_시내버스 정류소 위치정보_20240924.csv', encoding="utf-8")
-
-# 정류장 분포 지도 생성
-st.subheader('대구시 내 버스 정류장 분포')
-m = folium.Map(location=[35.8714354, 128.601445], tiles='cartodbpositron', zoom_start=12)
-for idx, row in bus_stops_data.iterrows():
-    folium.Marker(
-        location=[row['위도'], row['경도']],
-        popup=row['정류소명'],
-        icon=folium.Icon(color='red', icon='info-sign')
-    ).add_to(m)
-folium_static(m)
-
-st.line_chart(bus_stops_data)
-# 첫 번째 검색창: 대략적인 정보 확인
-st.subheader("정류장 대략적인 정보 검색")
-search_query_1 = st.text_input("대략적인 정류소 이름을 입력하세요:")
-
-if search_query_1:
-    # 검색어를 포함한 정류소 필터링
-    search_results = monthly_move[monthly_move['정류소명'].str.contains(search_query_1, case=False, na=False)]
+@st.cache
+def load_data():
+    # CSV 파일을 로드
+    monthly_move = pd.read_csv('project/page/대구광역시_시내버스_월별이용자수.csv', encoding='utf-8')
     
-    if not search_results.empty:
-        st.write(f"'{search_query_1}'에 대한 검색 결과:")
-        st.write(search_results[['정류소명', '정류소ID']].drop_duplicates())
-    else:
-        st.write(f"'{search_query_1}'에 대한 검색 결과가 없습니다.")
-
-# 두 번째 검색창: 정확한 정류소 선택 및 그래프 표시
-st.subheader("정확한 정류소 이름 입력")
-search_query_2 = st.text_input("정확한 정류소 이름을 입력하세요:")
-
-if search_query_2:
-    # 정확한 이름으로 데이터 필터링
-    selected_data = monthly_move[monthly_move['정류소명'] == search_query_2]
+    # 쉼표를 제거하고 승차와 하차를 정수로 변환
+    monthly_move['승차'] = monthly_move['승차'].str.replace(',', '').astype(int)
+    monthly_move['하차'] = monthly_move['하차'].str.replace(',', '').astype(int)
     
-    if not selected_data.empty:
-        # '년월' 데이터 전처리
-        selected_data['년월'] = pd.to_datetime(selected_data['년월'], format='%Y-%m', errors='coerce')
-        selected_data = selected_data.dropna(subset=['년월']).sort_values('년월')
-        
-        # 승차 및 하차 데이터 그래프 생성
-        plt.figure(figsize=(10, 6))
-        plt.plot(selected_data['년월'], selected_data['승차'], marker='o', label='승차 인원', color='blue')
-        plt.plot(selected_data['년월'], selected_data['하차'], marker='x', label='하차 인원', color='orange')
-        
-        # 그래프 레이아웃 설정
-        plt.title(f"{search_query_2} 정류장의 월별 승차 및 하차 인원")
-        plt.xlabel("월")
-        plt.ylabel("인원 수")
-        plt.xticks(rotation=45)
-        plt.legend()
-        plt.grid()
-        
-        # Streamlit에 그래프 표시
-        st.pyplot(plt)
-    else:
-        st.write(f"'{search_query_2}'에 대한 데이터가 없습니다.")
+    return monthly_move
+
+# Streamlit 앱 시작
+st.title("대구 버스 정류장 데이터 시각화")
+
+# 데이터 로드
+df = load_data()
+
+# 사용자에게 정류장 목록 제공
+st.subheader("정류장 선택")
+bus_stops = df['정류소명'].unique()  # 정류장 이름 목록 생성
+choice_list = st.multiselect("보고 싶은 정류장을 선택하세요:", bus_stops)
+
+# 선택된 정류장 데이터 필터링
+if choice_list:
+    # 선택된 정류장 데이터만 필터링
+    filtered_data = df[df['정류소명'].isin(choice_list)]
+    
+    st.write(f"선택된 정류장 데이터: {', '.join(choice_list)}")
+    st.dataframe(filtered_data)
+
+    # Altair를 이용한 시각화
+    st.subheader("선택한 정류장의 승차 및 하차 데이터 시각화")
+
+    # Altair 시각화용 데이터 전처리
+    filtered_data['년월'] = pd.to_datetime(filtered_data['년월'], format='%y-%b')  # 년월을 날짜 형식으로 변환
+    filtered_data = filtered_data.sort_values(by=['년월'])
+    
+    # Altair 차트 생성
+    chart = alt.Chart(filtered_data).transform_fold(
+        ['승차', '하차'],  # 시각화할 컬럼 선택
+        as_=['type', 'value']  # 새롭게 설정할 컬럼 이름
+    ).mark_line(point=True).encode(
+        x=alt.X('년월:T', title='년월'),  # 날짜를 x축에 맞게 처리
+        y=alt.Y('value:Q', title='인원 수'),  # y축은 승차/하차 인원 수
+        color='type:N',  # 승차와 하차를 다른 색으로 구분
+        tooltip=['년월', 'type', 'value']  # 툴팁에 표시할 항목
+    ).properties(
+        title="승차 및 하차 인원 추이"
+    ).interactive()
+
+    st.altair_chart(chart, use_container_width=True)
+else:
+    st.write("정류장을 선택해주세요.")
