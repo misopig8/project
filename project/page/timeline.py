@@ -29,14 +29,20 @@ if station_name:
         cols = st.columns(3)
         
         for index, row in selected_data.iterrows():
-            # 첫 번째 열에 노선 정보
-            cols[0].write(f"**노선**: {row['노선']}")
-            # 두 번째 열에 평균 배차 시간
-            cols[1].write(f"**평균 배차 시간**: {row['평균배차시간(분)']}분")
-            # 세 번째 열에 첫차 시간과 막차 시간, 시간표 유형
-            cols[2].write(f"**첫차 시간**: {row['첫차']}")
-            cols[2].write(f"**막차 시간**: {row['막차']}")
-            cols[2].write(f"**시간표 유형**: {row['시간표유형']}")
+            # 첫 번째 열에 노선과 배차시간을 함께 출력
+            with cols[0]:
+                st.write(f"**노선**: {row['노선']}")
+                st.write(f"**배차시간**: {row['평균배차시간(분)']}분")
+            
+            # 두 번째 열에 첫차와 막차를 함께 출력
+            with cols[1]:
+                st.write(f"**첫차**: {row['첫차']}")
+                st.write(f"**막차**: {row['막차']}")
+            
+            # 세 번째 열에 시간표 유형을 출력
+            with cols[2]:
+                st.write(f"**시간표 유형**: {row['시간표유형']}")
+            
             st.write("---")
     else:
         st.write(f"'{station_name}'에 해당하는 정류장이 없습니다.")
