@@ -46,6 +46,11 @@ else:
     st.write("모든 버스 정류장 데이터:")
     st.write(monthly_move)
 
+#재출력문
+
+# CSV 파일 로드
+file_path = '/mnt/data/대구광역시_시내버스_월별이용자수.csv'
+bus_stops_data = pd.read_csv(file_path, encoding='utf-8')
 
 # 검색창 추가
 search_query = st.text_input("검색할 정류소명을 입력하세요:", "")
