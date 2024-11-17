@@ -118,6 +118,10 @@ def load_data():
     monthly_move['승차'] = monthly_move['승차'].str.replace('"', '').str.replace(',', '').astype(int)
     monthly_move['하차'] = monthly_move['하차'].str.replace('"', '').str.replace(',', '').astype(int)
     
+    # '년월'을 2020-01, 2020-02 형식으로 변환
+    monthly_move['년월'] = monthly_move['년월'].apply(lambda x: '20' + x if len(x) == 5 else x)  # "20-Jan" -> "2020-01"
+    monthly_move['년월'] = pd.to_datetime(monthly_move['년월'], format='%Y-%b')  # 년월을 날짜 형식으로 변환
+
     return monthly_move
 
 # Streamlit 앱 시작
@@ -143,7 +147,6 @@ if choice_list:
     st.subheader("선택한 정류장의 승차 및 하차 데이터 시각화")
 
     # Altair 시각화용 데이터 전처리
-    filtered_data['년월'] = pd.to_datetime(filtered_data['년월'], format='%y-%b')  # 년월을 날짜 형식으로 변환
     filtered_data = filtered_data.sort_values(by=['년월'])
     
     # Altair 차트 생성
