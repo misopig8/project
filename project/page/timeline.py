@@ -18,7 +18,7 @@ if station_name:
         st.write(f"### {selected_station}에 대한 정보:")
 
         
-        cols = st.columns(1,1,1,1,2)
+        cols = st.columns(5)
 
         for index, row in selected_data.iterrows():
             with cols[0]:
