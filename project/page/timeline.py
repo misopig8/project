@@ -33,16 +33,19 @@ if station_name:
             with cols[0]:
                 st.write(f"**노선**: {row['노선']}")
                 st.write(f"**배차시간**: {row['평균배차시간(분)']}분")
+                st.markdown("<hr>", unsafe_allow_html=True)  # 구분선 추가
             
             # 두 번째 열에 첫차와 막차를 함께 출력
             with cols[1]:
                 st.write(f"**첫차**: {row['첫차']}")
                 st.write(f"**막차**: {row['막차']}")
+                st.markdown("<hr>", unsafe_allow_html=True)  # 구분선 추가
             
             # 세 번째 열에 시간표 유형을 출력
             with cols[2]:
                 st.write(f"**시간표 유형**: {row['시간표유형']}")
+                st.markdown("<hr>", unsafe_allow_html=True)  # 구분선 추가
             
-            st.write("---")
+            st.write("---")  # 덧붙여서 각 항목을 구분하는 줄 추가
     else:
         st.write(f"'{station_name}'에 해당하는 정류장이 없습니다.")
