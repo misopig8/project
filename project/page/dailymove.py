@@ -95,7 +95,6 @@
 # else:
 #     st.write("정류소명을 입력하여 검색하세요.")
 
-
 import streamlit as st
 from streamlit_folium import folium_static
 import folium
@@ -110,9 +109,9 @@ sns.set(font="Malgun Gothic", rc={"axes.unicode_minus": False}, style='white')
 # 제목 표시
 st.title("대구시 버스 정류장 및 월별 통행량 정보")
 
-# CSV 파일 로드
-bus_stops_data = pd.read_csv('project/page/대구광역시_시내버스 정류소 위치정보_20240924.csv', encoding="utf-8")
+# 데이터 로드
 monthly_move = pd.read_csv('project/page/대구광역시_시내버스_월별이용자수.csv', encoding="utf-8")
+bus_stops_data = pd.read_csv('project/page/대구광역시_시내버스 정류소 위치정보_20240924.csv', encoding="utf-8")
 
 # 정류장 분포 지도 생성
 st.subheader('대구시 내 버스 정류장 분포')
@@ -148,8 +147,8 @@ if search_query:
         
         # 승차 및 하차 데이터 그래프 생성
         plt.figure(figsize=(10, 6))
-        plt.plot(selected_data['년월'], selected_data['승차'], marker='o', label='승차 인원')
-        plt.plot(selected_data['년월'], selected_data['하차'], marker='x', label='하차 인원')
+        plt.plot(selected_data['년월'], selected_data['승차'], marker='o', label='승차 인원', color='blue')
+        plt.plot(selected_data['년월'], selected_data['하차'], marker='x', label='하차 인원', color='orange')
         
         # 그래프 레이아웃 설정
         plt.title(f"{selected_stop} 정류장의 월별 승차 및 하차 인원")
