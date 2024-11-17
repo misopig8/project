@@ -97,12 +97,22 @@
 import streamlit as st
 import pandas as pd
 import altair as alt
+import matplotlib
+import matplotlib.pyplot as plt
+
+# 한글 폰트 설정 (Windows, Mac, Linux 등 환경에 맞게 설정)
+matplotlib.rcParams['font.family'] = 'Malgun Gothic'  # Windows의 경우
+# matplotlib.rcParams['font.family'] = 'AppleGothic'  # Mac의 경우
+# matplotlib.rcParams['font.family'] = 'NanumGothic'  # Linux 또는 다른 경우
+
+# 한글 지원을 위해 해당 코드 추가
+plt.rcParams['axes.unicode_minus'] = False
 
 # 데이터 로드
 @st.cache
 def load_data():
-    # CSV 파일을 로드
-    monthly_move = pd.read_csv('project/page/대구광역시_시내버스_월별이용자수.csv', encoding='utf-8')
+    # CSV 파일을 로드 (인코딩 설정 변경)
+    monthly_move = pd.read_csv('project/page/대구광역시_시내버스_월별이용자수.csv', encoding='utf-8-sig')
     
     # 쉼표를 제거하고 승차와 하차를 정수로 변환
     monthly_move['승차'] = monthly_move['승차'].str.replace(',', '').astype(int)
