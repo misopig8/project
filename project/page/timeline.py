@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 
 # CSV 파일을 pandas로 읽기
-bus_chart = pd.read_csv('project/page/대구광역시_시내버스 정류소별_노선별_평균배차간격_20231117.csv', encoding='utf-8')
+bus_chart = pd.read_csv('대구광역시_시내버스 정류소별_노선별_평균배차간격_20231117.csv', encoding='utf-8')
 
 # Streamlit 앱 타이틀
 st.title('대구광역시 시내버스 정류장 정보 검색')
@@ -24,11 +24,14 @@ if station_name:
         selected_data = filtered_df[filtered_df['정류소'] == selected_station]
 
         st.write(f"### {selected_station}에 대한 정보:")
+
         for index, row in selected_data.iterrows():
+            # 각 정류장의 정보 출력
             st.write(f"**노선**: {row['노선']}")
             st.write(f"**평균 배차 시간**: {row['평균배차시간(분)']}분")
             st.write(f"**첫차 시간**: {row['첫차']}")
             st.write(f"**막차 시간**: {row['막차']}")
+            st.write(f"**시간표 유형**: {row['시간표유형']}")
             st.write("---")
     else:
         st.write(f"'{station_name}'에 해당하는 정류장이 없습니다.")
