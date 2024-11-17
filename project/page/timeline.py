@@ -45,7 +45,7 @@ if station_name:
             with cols[2]:
                 st.write(f"**시간표 유형**: {row['시간표유형']}")
                 st.markdown("<hr>", unsafe_allow_html=True)
-                st.markdown("<hr>", unsafe_allow_html=True)  # 구분선 추가
+                st.write("             ")  # 구분선 추가
             
             st.write("---")  # 덧붙여서 각 항목을 구분하는 줄 추가
     else:
