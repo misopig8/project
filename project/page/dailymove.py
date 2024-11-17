@@ -94,7 +94,6 @@
 #         st.write(f"'{search_query}'에 해당하는 정류소가 없습니다.")
 # else:
 #     st.write("정류소명을 입력하여 검색하세요.")
-
 import streamlit as st
 from streamlit_folium import folium_static
 import folium
@@ -124,23 +123,30 @@ for idx, row in bus_stops_data.iterrows():
     ).add_to(m)
 folium_static(m)
 
-# 정류장 검색 및 필터링
-st.subheader("정류장 검색 및 월별 통행량 조회")
-search_query = st.text_input("찾고 싶은 정류장의 이름을 입력하세요:")
+st.line_chart(bus_stops_data)
+# 첫 번째 검색창: 대략적인 정보 확인
+st.subheader("정류장 대략적인 정보 검색")
+search_query_1 = st.text_input("대략적인 정류소 이름을 입력하세요:")
 
-if search_query:
-    # 검색어를 포함하는 정류소 필터링
-    search_results = monthly_move[monthly_move['정류소명'].str.contains(search_query, case=False, na=False)]
+if search_query_1:
+    # 검색어를 포함한 정류소 필터링
+    search_results = monthly_move[monthly_move['정류소명'].str.contains(search_query_1, case=False, na=False)]
     
     if not search_results.empty:
-        st.write(f"'{search_query}'에 대한 검색 결과:")
-        
-        # 검색 결과에서 선택할 정류소 지정
-        selected_stop = st.selectbox("정류소를 선택하세요:", search_results['정류소명'].unique())
-        
-        # 선택된 정류소 데이터 필터링
-        selected_data = search_results[search_results['정류소명'] == selected_stop]
-        
+        st.write(f"'{search_query_1}'에 대한 검색 결과:")
+        st.write(search_results[['정류소명', '정류소ID']].drop_duplicates())
+    else:
+        st.write(f"'{search_query_1}'에 대한 검색 결과가 없습니다.")
+
+# 두 번째 검색창: 정확한 정류소 선택 및 그래프 표시
+st.subheader("정확한 정류소 이름 입력")
+search_query_2 = st.text_input("정확한 정류소 이름을 입력하세요:")
+
+if search_query_2:
+    # 정확한 이름으로 데이터 필터링
+    selected_data = monthly_move[monthly_move['정류소명'] == search_query_2]
+    
+    if not selected_data.empty:
         # '년월' 데이터 전처리
         selected_data['년월'] = pd.to_datetime(selected_data['년월'], format='%Y-%m', errors='coerce')
         selected_data = selected_data.dropna(subset=['년월']).sort_values('년월')
@@ -151,7 +157,7 @@ if search_query:
         plt.plot(selected_data['년월'], selected_data['하차'], marker='x', label='하차 인원', color='orange')
         
         # 그래프 레이아웃 설정
-        plt.title(f"{selected_stop} 정류장의 월별 승차 및 하차 인원")
+        plt.title(f"{search_query_2} 정류장의 월별 승차 및 하차 인원")
         plt.xlabel("월")
         plt.ylabel("인원 수")
         plt.xticks(rotation=45)
@@ -161,6 +167,4 @@ if search_query:
         # Streamlit에 그래프 표시
         st.pyplot(plt)
     else:
-        st.write(f"'{search_query}'에 해당하는 검색 결과가 없습니다.")
-else:
-    st.write("정류소명을 입력하여 검색 결과를 확인하세요.")
+        st.write(f"'{search_query_2}'에 대한 데이터가 없습니다.")
