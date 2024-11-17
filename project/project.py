@@ -8,8 +8,6 @@ st.set_page_config(
 pages = {
     "회원" : [
         st.Page("./page/signin.py",title="회원가입"),
-        st.Page("./page/login.py",title="로그인"),
-        st.Page("./page/logout.py",title="로그아웃")
     ],
     "   회원정보":[
         st.Page("./page/addressbring.py",title="내 주소 불러오기"),
