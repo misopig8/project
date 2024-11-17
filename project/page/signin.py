@@ -17,6 +17,7 @@ if station_name:
     filtered_df = bus_chart[bus_chart['정류소'].str.contains(station_name, na=False)]
     if not filtered_df.empty:
         station_list = filtered_df['정류소'].unique()
+        selected_station = st.selectbox('검색된 정류장 목록에서 선택하세요:', station_list)
     else:
         st.write(f"'{station_name}'에 해당하는 정류장이 없습니다.")
 
