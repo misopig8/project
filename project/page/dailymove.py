@@ -91,10 +91,10 @@ if search_query:
         plt.figure(figsize=(10, 5))
         
         # 승차 데이터 추가
-        plt.plot(selected_data['년월'], selected_data['승차'], marker='o', label='승차')
+        plt.plot(selected_data['년월'], selected_data['승차'], marker='o', label='seungcha')
         
         # 하차 데이터 추가
-        plt.plot(selected_data['년월'], selected_data['하차'], marker='x', label='하차')
+        plt.plot(selected_data['년월'], selected_data['하차'], marker='x', label='hacha')
         
         # 그래프 레이아웃 설정
         plt.title(f"{selected_stop} monthly seungcha and hacha people.")
