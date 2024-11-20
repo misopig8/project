@@ -83,13 +83,16 @@ if search_query:
 else:
     st.write("정류소명을 입력하여 검색하세요.")
 
-st.dataframe(monthly_move)
 
-monthly_move["월"] = monthly_move["날짜"].dt.month  # 월 추출
-monthly_move["년"] = monthly_move["날짜"].dt.year  # 년도 추출 (필요 시)
+
+# 코드 작동 테스트라인. 왜 안되지 십발
+st.dataframe(selected_data)
+
+selected_data["월"] = selected_data["년월"].dt.month  # 월 추출
+selected_data["년"] = selected_data["년월"].dt.year  # 년도 추출 (필요 시)
 
 # 월별 평균 계산 (가장 단순한 방법으로 월별 합계나 평균을 구할 수 있습니다)
-monthly_data = monthly_move.groupby("월")[["승차", "하차"]].mean()
+monthly_data = selected_data.groupby("월")[["승차", "하차"]].mean()
 
 # 그래프 그리기
 fig, ax = plt.subplots(figsize=(10, 6))
