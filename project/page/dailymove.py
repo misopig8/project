@@ -78,34 +78,34 @@ if search_query:
 
         # 그래프를 Streamlit에 표시
         st.pyplot(plt)
+
+        
+#코드 작동 테스트라인. 왜 안되지 십발
+        st.dataframe(selected_data)
+ 
+#  #코드 작동 테스트라인2 이거 안되면 진짜
+        selected_data["월"] = selected_data["년월"].dt.month  # 월 추출
+        selected_data["년"] = selected_data["년월"].dt.year  # 년도 추출 (필요 시)
+
+# # 월별 평균 계산 (가장 단순한 방법으로 월별 합계나 평균을 구할 수 있습니다)
+        monthly_data = selected_data.groupby("월")[["승차", "하차"]].mean()
+
+# # 그래프 그리기
+        fig, ax = plt.subplots(figsize=(10, 6))
+        ax.plot(monthly_data.index, monthly_data["승차"], label="승차", marker="o")
+        ax.plot(monthly_data.index, monthly_data["하차"], label="하차", marker="s")
+
+# # 그래프 설정
+        ax.set_title("2020년 월별 승차와 하차 추이")
+        ax.set_xlabel("월")
+        ax.set_ylabel("값")
+        ax.set_xticks(monthly_data.index)  # X축에 월 표시
+        ax.set_xticklabels(["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"])
+        ax.legend()
+
+        # Streamlit에서 그래프 표시
+        st.pyplot(fig)
     else:
         st.write(f"'{search_query}'에 해당하는 정류소가 없습니다.")
 else:
     st.write("정류소명을 입력하여 검색하세요.")
-
-
-
-# 코드 작동 테스트라인. 왜 안되지 십발
-st.dataframe(selected_data)
-
-selected_data["월"] = selected_data["년월"].dt.month  # 월 추출
-selected_data["년"] = selected_data["년월"].dt.year  # 년도 추출 (필요 시)
-
-# 월별 평균 계산 (가장 단순한 방법으로 월별 합계나 평균을 구할 수 있습니다)
-monthly_data = selected_data.groupby("월")[["승차", "하차"]].mean()
-
-# 그래프 그리기
-fig, ax = plt.subplots(figsize=(10, 6))
-ax.plot(monthly_data.index, monthly_data["승차"], label="승차", marker="o")
-ax.plot(monthly_data.index, monthly_data["하차"], label="하차", marker="s")
-
-# 그래프 설정
-ax.set_title("2020년 월별 승차와 하차 추이")
-ax.set_xlabel("월")
-ax.set_ylabel("값")
-ax.set_xticks(monthly_data.index)  # X축에 월 표시
-ax.set_xticklabels(["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"])
-ax.legend()
-
-# Streamlit에서 그래프 표시
-st.pyplot(fig)
