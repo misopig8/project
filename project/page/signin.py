@@ -60,7 +60,7 @@ if btn:
     if pw == pw_check:            
             #입력한 정보를 DB에 저장
         sql = f"""
-        insert into user(username, password, station_number)
+        insert into projectuser(username, password, station_number)
         values('{id}','{pw}','{station_number}',)"""
         cursor.execute(sql)
         conn.commit()
