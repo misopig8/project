@@ -37,6 +37,8 @@ def load_data():
     return monthly_move
 
 
+
+
 # 검색창 추가
 search_query = st.text_input("검색할 정류소명을 입력하세요:", "")
 
@@ -80,3 +82,5 @@ if search_query:
         st.write(f"'{search_query}'에 해당하는 정류소가 없습니다.")
 else:
     st.write("정류소명을 입력하여 검색하세요.")
+
+st.dataframe(monthly_move)
