@@ -73,6 +73,7 @@ if search_query:
         plt.xlabel("month")
         plt.ylabel("people")
         plt.legend()
+        plt.ylim(0, selected_data[['승차', '하차']].max().max() * 1.1)  # 여유를 두기 위해 10% 증가시킴
 
         # 그래프를 Streamlit에 표시
         st.pyplot(plt)
