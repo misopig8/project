@@ -61,7 +61,7 @@ if search_query:
         selected_data = selected_data.sort_values('년월')
         
         # 그래프 생성
-        plt.figure(figsize=(100, 50))
+        plt.figure(figsize=(10, 5))
         
         plt.ticklabel_format(axis='y', style='plain')
         # 승차 데이터 추가
