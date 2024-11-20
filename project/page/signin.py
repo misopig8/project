@@ -61,7 +61,7 @@ if btn:
             #입력한 정보를 DB에 저장
         sql = f"""
         insert into projectuser(username, password, station_number)
-        values('{id}','{pw}','{station_number}',)"""
+        values('{id}','{pw}','{station_number}')"""
         cursor.execute(sql)
         conn.commit()
         st.success("회원가입 성공!")
