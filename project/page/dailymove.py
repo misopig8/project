@@ -97,9 +97,9 @@ if search_query:
         plt.plot(selected_data['년월'], selected_data['하차'], marker='x', label='하차')
         
         # 그래프 레이아웃 설정
-        plt.title(f"{selected_stop} 정류장의 월별 승차 및 하차 인원")
+        plt.title(f"{selected_stop} monthly seungcha and hacha people.")
         plt.xlabel("month")
-        plt.ylabel("usingpeople")
+        plt.ylabel("people")
         plt.legend()
 
         # 그래프를 Streamlit에 표시
