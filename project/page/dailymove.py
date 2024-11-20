@@ -6,7 +6,6 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 import matplotlib.font_manager as fm
-import altair as alt
 
 
 st.title("버스통행량 정보")
@@ -38,34 +37,6 @@ def load_data():
     return monthly_move
 
 
-
-
-
-
-
-
-
-# 검색창 추가
-search_query = st.text_input("찾는 정류장의 이름을입력하세요", "")
-
-# 검색 기능 구현
-if search_query:
-    # 입력한 검색어가 포함된 행만 필터링
-    search_results = monthly_move[monthly_move['정류소명'].str.contains(search_query, case=False, na=False)]
-    
-    # 결과가 있다면 출력
-    if not search_results.empty:
-        st.write(f"'{search_query}'에 대한 검색 결과:")
-        st.write(search_results)
-    else:
-        st.write(f"'{search_query}'에 대한 검색 결과가 없습니다.")
-else:
-    # 초기에는 전체 데이터 출력
-    st.write("모든 버스 정류장 데이터:")
-    st.write(monthly_move)
-
-
-
 # 검색창 추가
 search_query = st.text_input("검색할 정류소명을 입력하세요:", "")
 
@@ -90,6 +61,7 @@ if search_query:
         # 그래프 생성
         plt.figure(figsize=(10, 5))
         
+        plt.ticklabel_format(axis='y', style='plain')
         # 승차 데이터 추가
         plt.plot(selected_data['년월'], selected_data['승차'], marker='o', label='seungcha')
         
@@ -108,18 +80,3 @@ if search_query:
         st.write(f"'{search_query}'에 해당하는 정류소가 없습니다.")
 else:
     st.write("정류소명을 입력하여 검색하세요.")
-
-
-chart = alt.Chart(monthly_move).transform_fold(
-        ['승차', '하차'],  # 시각화할 컬럼 선택
-        as_=['type', 'value']  # 새롭게 설정할 컬럼 이름
-    ).mark_line(point=True).encode(
-        x=alt.X('년월:T', title='년월'),  # 날짜를 x축에 맞게 처리
-        y=alt.Y('value:Q', title='인원 수'),  # y축은 승차/하차 인원 수
-        color='type:N',  # 승차와 하차를 다른 색으로 구분
-        tooltip=['년월', 'type', 'value']  # 툴팁에 표시할 항목
-    ).properties(
-        title="승차 및 하차 인원 추이"
-    ).interactive()
-
-st.altair_chart(chart, use_container_width=True)
