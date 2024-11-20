@@ -64,10 +64,7 @@ else:
     st.write("모든 버스 정류장 데이터:")
     st.write(monthly_move)
 
-#재출력문
 
-# CSV 파일 로드
-file_path = 'project/page/대구광역시_시내버스_월별이용자수.csv'
 
 # 검색창 추가
 search_query = st.text_input("검색할 정류소명을 입력하세요:", "")
@@ -101,8 +98,8 @@ if search_query:
         
         # 그래프 레이아웃 설정
         plt.title(f"{selected_stop} 정류장의 월별 승차 및 하차 인원")
-        plt.xlabel("월")
-        plt.ylabel("이용자 수")
+        plt.xlabel("month")
+        plt.ylabel("usingpeople")
         plt.legend()
 
         # 그래프를 Streamlit에 표시
