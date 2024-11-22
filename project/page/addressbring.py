@@ -40,6 +40,13 @@ if st.button("정류장 번호 조회"):
                 longitude = station_data.iloc[0]['경도']
 
                 st.write(f"정류장의 위도: {latitude}, 경도: {longitude}")
+                m = folium.Map(location=[latitude, longitude], zoom_start=12)  # 서울 시청 위치
+
+# 지도에 마커 추가
+                folium.Marker([latitude, longitude], popup="나의 정류장 위치", tooltip="버스").add_to(m)
+
+# Streamlit에 지도 표시     
+                st_folium(m, width=700, height=500)
             else:
                 st.error("CSV에서 해당 정류장 번호를 찾을 수 없습니다.")
         else:
@@ -55,12 +62,6 @@ conn.close()
 
 
 # 초기 위치 설정 (위도, 경도)
-m = folium.Map(location=[37.5665, 126.9780], zoom_start=12)  # 서울 시청 위치
 
-# 지도에 마커 추가
-folium.Marker([37.5665, 126.9780], popup="서울 시청", tooltip="서울").add_to(m)
-
-# Streamlit에 지도 표시
-st_folium(m, width=700, height=500)
 
 
