@@ -12,6 +12,16 @@ bus_chart = pd.read_csv('project/page/대구광역시_시내버스 정류소별_
 #집근처 버스정류장 찾고 그 번호 입력하게 하기
 
 
+cursor.execute("""
+CREATE TABLE IF NOT EXISTS projectuser (
+    userid INTEGER PRIMARY KEY AUTOINCREMENT,
+    username TEXT NOT NULL,
+    password TEXT NOT NULL,
+    station_number TEXT NOT NULL,
+    create_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+)
+""")
+conn.commit()
 
 
     #회원가입 화면
