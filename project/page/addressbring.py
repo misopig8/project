@@ -1,8 +1,46 @@
 import streamlit as st
 import folium
 from streamlit_folium import st_folium
-
+import streamlit as st
+import folium
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+import matplotlib.font_manager as fm
+import sqlite3
 st.title("내 주소")
+bus_stops_data = pd.read_csv('project/page/대구광역시_시내버스 정류소 위치정보_20240924.csv', encoding="utf-8")
+
+
+# 데이터베이스 연결
+conn = sqlite3.connect('db.db')
+cursor = conn.cursor()
+
+# 테이블 데이터 조회
+def fetch_data():
+    sql = "SELECT * FROM projectuser"
+    cursor.execute(sql)
+    rows = cursor.fetchall()  # 모든 데이터 가져오기
+    columns = [desc[0] for desc in cursor.description]  # 컬럼 이름 가져오기
+    return pd.DataFrame(rows, columns=columns)  # DataFrame으로 반환
+
+# Streamlit UI
+st.title("회원 데이터 조회")
+
+# 데이터 불러오기 버튼
+if st.button("데이터 불러오기"):
+    try:
+        df = fetch_data()
+        if not df.empty:
+            st.success("데이터를 성공적으로 불러왔습니다!")
+            st.dataframe(df)  # 데이터를 Streamlit의 DataFrame 형태로 보여주기
+        else:
+            st.warning("데이터가 없습니다.")
+    except Exception as e:
+        st.error(f"오류 발생: {e}")
+    finally:
+        conn.close()  # 연결 닫기
+
 
 
 # 초기 위치 설정 (위도, 경도)
@@ -15,30 +53,3 @@ folium.Marker([37.5665, 126.9780], popup="서울 시청", tooltip="서울").add_
 st_folium(m, width=700, height=500)
 
 
-from geopy.geocoders import Nominatim
-
-# Geocoding을 위한 geolocator 초기화
-geolocator = Nominatim(user_agent="geoapiExercises")
-
-st.title("도로명 주소를 위도 및 경도로 변환")
-
-# 사용자로부터 도로명 주소 5자리 입력받기
-address_part = st.text_input("자신의 도로명 주소를 입력하세요")
-st.write("예시: 서울특별시 종로구 세종대로 110, 대한민국")
-
-if st.button("위도 및 경도로 변환"):
-    # Geocoding을 위해 도로명 주소 부분을 이용
-    if address_part:
-        try:
-            # Nominatim으로 주소 검색
-            location = geolocator.geocode(address_part)
-            
-            if location:
-                # 위도, 경도를 화면에 출력
-                st.success(f"입력한 주소의 위도: {location.latitude}, 경도: {location.longitude}")
-            else:
-                st.error("주소를 찾을 수 없습니다.")
-        except Exception as e:
-            st.error(f"오류가 발생했습니다: {e}")
-    else:
-        st.error("도로명 주소를 입력하세요!")
