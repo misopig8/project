@@ -33,7 +33,7 @@ if st.button("정류장 번호 조회"):
             st.success(f"사용자의 정류장 번호: {station_number}")
 
             # Step 2: station_number를 기준으로 CSV에서 위도와 경도 조회
-            station_data = bus_stops_data[bus_stops_data['정류소ID'] == int(station_number)]
+            station_data = bus_stops_data[bus_stops_data['정류소아이디'] == int(station_number)]
 
             if not station_data.empty:
                 latitude = station_data.iloc[0]['위도']
