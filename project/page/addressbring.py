@@ -1,6 +1,6 @@
 import streamlit as st
 import folium
-from streamlit_folium import st_folium
+from streamlit_folium import folium_static
 import streamlit as st
 import folium
 import pandas as pd
@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import matplotlib.font_manager as fm
 import sqlite3
-st.title("내 주소")
+
 bus_stops_data = pd.read_csv('project/page/대구광역시_시내버스 정류소 위치정보_20240924.csv', encoding="utf-8")
 
 
@@ -46,7 +46,7 @@ if st.button("정류장 번호 조회"):
                 folium.Marker([latitude, longitude], popup="나의 정류장 위치", tooltip="버스").add_to(m)
 
 # Streamlit에 지도 표시     
-                st_folium(m, width=700, height=500)
+                folium_static(m)
             else:
                 st.error("CSV에서 해당 정류장 번호를 찾을 수 없습니다.")
         else:
