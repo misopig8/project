@@ -43,7 +43,7 @@ if st.button("정류장 번호 조회"):
                 m = folium.Map(location=[latitude, longitude], zoom_start=12)  # 서울 시청 위치
 
 # 지도에 마커 추가
-                folium.Marker([latitude, longitude], popup="나의 정류장 위치", tooltip="버스").add_to(m)
+                folium.Marker([latitude, longitude], popup="나의 정류장 위치", tooltip="f{username}의 정류장").add_to(m)
 
 # Streamlit에 지도 표시     
                 folium_static(m)
