@@ -15,32 +15,39 @@ bus_stops_data = pd.read_csv('project/page/대구광역시_시내버스 정류�
 # 데이터베이스 연결
 conn = sqlite3.connect('db.db')
 cursor = conn.cursor()
+import streamlit as st
+import sqlite3
 
-# 테이블 데이터 조회
-def fetch_data():
-    sql = "SELECT * FROM projectuser"
-    cursor.execute(sql)
-    rows = cursor.fetchall()  # 모든 데이터 가져오기
-    columns = [desc[0] for desc in cursor.description]  # 컬럼 이름 가져오기
-    return pd.DataFrame(rows, columns=columns)  # DataFrame으로 반환
+# 데이터베이스 연결
+conn = sqlite3.connect('db.db')
+cursor = conn.cursor()
+
+# 특정 사용자의 station_number 조회 함수
+def get_station_number(username):
+    sql = "SELECT station_number FROM projectuser WHERE username = ?"
+    cursor.execute(sql, (username,))
+    result = cursor.fetchone()  # 하나의 결과만 가져옴
+    return result[0] if result else None  # 결과가 있으면 첫 번째 값 반환, 없으면 None
 
 # Streamlit UI
-st.title("회원 데이터 조회")
+st.title("정류장 번호 조회")
 
-# 데이터 불러오기 버튼
-if st.button("데이터 불러오기"):
-    try:
-        df = fetch_data()
-        if not df.empty:
-            st.success("데이터를 성공적으로 불러왔습니다!")
-            st.dataframe(df)  # 데이터를 Streamlit의 DataFrame 형태로 보여주기
-        else:
-            st.warning("데이터가 없습니다.")
-    except Exception as e:
-        st.error(f"오류 발생: {e}")
-    finally:
-        conn.close()  # 연결 닫기
+# 사용자 이름 입력
+username = st.text_input("사용자 이름 입력:")
 
+# 조회 버튼
+if st.button("정류장 번호 조회"):
+    station_number = get_station_number(username)
+    if station_number:
+        st.success(f"{username}님의 정류장 번호는: {station_number}")
+        # 변수에 저장
+        selected_station_number = station_number
+        st.write(f"저장된 변수: {selected_station_number}")
+    else:
+        st.warning("해당 사용자를 찾을 수 없습니다.")
+
+# 데이터베이스 연결 닫기
+conn.close()
 
 
 # 초기 위치 설정 (위도, 경도)
