@@ -38,12 +38,12 @@ if st.button("정류장 번호 조회"):
             if not station_data.empty:
                 latitude = station_data.iloc[0]['위도']
                 longitude = station_data.iloc[0]['경도']
-
+                tooltip_text = f"{username}의 버스 정류장"
                 st.write(f"정류장의 위도: {latitude}, 경도: {longitude}")
                 m = folium.Map(location=[latitude, longitude], zoom_start=12)  # 서울 시청 위치
 
 # 지도에 마커 추가
-                folium.Marker([latitude, longitude], popup="나의 정류장 위치", tooltip="f{username}의 정류장").add_to(m)
+                folium.Marker([latitude, longitude], popup=f"정류소 번호: {station_number}", tooltip=tooltip_text).add_to(m)
 
 # Streamlit에 지도 표시     
                 folium_static(m)
@@ -62,3 +62,5 @@ conn.close()
 
 
 
+# tooltip_text = f"{username}의 버스 정류장"
+#                 folium.Marker([latitude, longitude], popup=f"정류소 번호: {station_number}", tooltip=tooltip_text).add_to(m)
