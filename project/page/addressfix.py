@@ -25,30 +25,29 @@ if st.button("로그인"):
         if user:
             # 사용자 존재하면 로그인 성공
             st.success(f"환영합니다, {username}님!")
-            station_name = st.text_input('새로운 정류장의 이름을 입력하세요:')
-            if station_name:
-                # 입력한 정류장 이름에 해당하는 데이터를 필터링
-                filtered_df = bus_chart[bus_chart['정류소'].str.contains(station_name, na=False)]
+            # station_name = st.text_input('새로운 정류장의 이름을 입력하세요:')
+            # if station_name:
+            #     # 입력한 정류장 이름에 해당하는 데이터를 필터링
+            #     filtered_df = bus_chart[bus_chart['정류소'].str.contains(station_name, na=False)]
 
-                # 정류장 이름이 있는 경우
-                if not filtered_df.empty:
-                    # 정류소와 정류소ID를 함께 표시할 수 있도록 리스트 준비
-                    station_list = filtered_df[['정류소ID', '정류소']].drop_duplicates()
-                    # 정류소ID와 정류소를 결합하여 표시
-                    station_display = station_list.apply(lambda row: f"{row['정류소ID']} - {row['정류소']}", axis=1)
+            #     # 정류장 이름이 있는 경우
+            #     if not filtered_df.empty:
+            #         # 정류소와 정류소ID를 함께 표시할 수 있도록 리스트 준비
+            #         station_list = filtered_df[['정류소ID', '정류소']].drop_duplicates()
+            #         # 정류소ID와 정류소를 결합하여 표시
+            #         station_display = station_list.apply(lambda row: f"{row['정류소ID']} - {row['정류소']}", axis=1)
 
-                    # 선택된 정류소를 찾기 위한 selectbox
-                    selected_station_display = st.selectbox('검색된 정류장 목록에서 새로운 정류장을 선택하세요:', station_display)
+            #         # 선택된 정류소를 찾기 위한 selectbox
+            #         selected_station_display = st.selectbox('검색된 정류장 목록에서 새로운 정류장을 선택하세요:', station_display)
 
-                    # 선택된 정류소의 ID를 추출
-                    selected_station_id = station_list[station_list.apply(lambda row: f"{row['정류소ID']} - {row['정류소']}", axis=1) == selected_station_display]['정류소ID'].iloc[0]
+            #         # 선택된 정류소의 ID를 추출
+            #         selected_station_id = station_list[station_list.apply(lambda row: f"{row['정류소ID']} - {row['정류소']}", axis=1) == selected_station_display]['정류소ID'].iloc[0]
 
-                    # 선택된 정류소ID에 해당하는 데이터만 필터링
-                    selected_data = filtered_df[filtered_df['정류소ID'] == selected_station_id]
+            #         # 선택된 정류소ID에 해당하는 데이터만 필터링
+            #         selected_data = filtered_df[filtered_df['정류소ID'] == selected_station_id]
 
-                    st.write(f"### {selected_station_display}의 정류소 아이디")
-                else:
-                    st.error("존재하지않는 정거장입니다.")
+            #         st.write(f"### {selected_station_display}의 정류소 아이디")
+                
             # 사용자가 수정할 station_number 입력 받기
             new_station_number = st.text_input("새로운 정류장 번호를 입력하세요:")
             
