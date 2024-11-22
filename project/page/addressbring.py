@@ -57,9 +57,6 @@ if st.button("정류장 번호 조회"):
 # DB 연결 종료
 conn.close()
 
-# 데이터베이스 연결 닫기
-conn.close()
-
 
 # 초기 위치 설정 (위도, 경도)
 
