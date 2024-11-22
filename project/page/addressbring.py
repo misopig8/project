@@ -13,38 +13,42 @@ bus_stops_data = pd.read_csv('project/page/대구광역시_시내버스 정류�
 
 
 # 데이터베이스 연결
-conn = sqlite3.connect('db.db')
-cursor = conn.cursor()
-import streamlit as st
-import sqlite3
-
-# 데이터베이스 연결
+# SQLite DB 연결
 conn = sqlite3.connect('db.db')
 cursor = conn.cursor()
 
-# 특정 사용자의 station_number 조회 함수
-def get_station_number(username):
-    sql = "SELECT station_number FROM projectuser WHERE username = ?"
-    cursor.execute(sql, (username,))
-    result = cursor.fetchone()  # 하나의 결과만 가져옴
-    return result[0] if result else None  # 결과가 있으면 첫 번째 값 반환, 없으면 None
+# Step 1: Username 기반으로 station_number 조회
+st.title("정류장 조회 및 위/경도 검색")
 
-# Streamlit UI
-st.title("정류장 번호 조회")
+username = st.text_input("사용자 아이디를 입력하세요:")
 
-# 사용자 이름 입력
-username = st.text_input("사용자 이름 입력:")
-
-# 조회 버튼
 if st.button("정류장 번호 조회"):
-    station_number = get_station_number(username)
-    if station_number:
-        st.success(f"{username}님의 정류장 번호는: {station_number}")
-        # 변수에 저장
-        selected_station_number = station_number
-        st.write(f"저장된 변수: {selected_station_number}")
+    if username:
+        # username을 기반으로 station_number 조회
+        cursor.execute("SELECT station_number FROM projectuser WHERE username = ?", (username,))
+        result = cursor.fetchone()
+        
+        if result:
+            station_number = result[0]  # station_number 값 저장
+            st.success(f"사용자의 정류장 번호: {station_number}")
+
+            # Step 2: station_number를 기준으로 CSV에서 위도와 경도 조회
+            station_data = bus_stops_data[bus_stops_data['정류소ID'] == int(station_number)]
+
+            if not station_data.empty:
+                latitude = station_data.iloc[0]['위도']
+                longitude = station_data.iloc[0]['경도']
+
+                st.write(f"정류장의 위도: {latitude}, 경도: {longitude}")
+            else:
+                st.error("CSV에서 해당 정류장 번호를 찾을 수 없습니다.")
+        else:
+            st.error("DB에 해당 사용자가 없습니다.")
     else:
-        st.warning("해당 사용자를 찾을 수 없습니다.")
+        st.error("사용자 아이디를 입력해주세요.")
+
+# DB 연결 종료
+conn.close()
 
 # 데이터베이스 연결 닫기
 conn.close()
